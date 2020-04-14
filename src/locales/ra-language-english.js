@@ -36,6 +36,8 @@ const lang = {
 			loading: 'Loading',
 			not_found: 'Not Found',
 			show: '%{name} #%{id}',
+			empty: 'Kayıt bulunamadı',
+			invite: '',
 		},
 		input: {
 			file: {
@@ -131,6 +133,8 @@ const lang = {
 	menu: {
 		dashboard: 'Dashboard',
 		adminApi: 'Admin',
+		changeLang: 'Change Language',
+		logout: 'Logout',
 	},
 	pages: {
 		breadCrumbs: {
@@ -157,9 +161,7 @@ const lang = {
 			AdminApi: 'Admin',
 		},
 	},
-	tabs: {
-		
-	},
+	tabs: {},
 	footer: {
 		privacy: 'Privacy',
 		support: 'Support',
@@ -167,14 +169,16 @@ const lang = {
 		contact: 'Contact',
 	},
 	other: {
-		
+		adminUser: {
+			roles: 'Roles'
+		}
 	},
 	enums: {
 		Language: {
 			tr: 'Turkish',
 			en: 'English',
 		},
-		StatusEnum: {
+		Status: {
 			Active: 'Active',
 			Passive: 'Passive',
 			Deleted: 'Deleted',
@@ -185,10 +189,18 @@ const lang = {
 			IOS: 'IOS',
 			WindowsMobile: 'Windows Mobile',
 		},
+		AdminUserTheme: {
+			Light: 'Light',
+			Dark: 'Dark',
+		},
 	},
 	resources: {
-		'api/AdminUserSearch': {
-			name: 'AdminUser',
+		'admin/RoleMap': {
+			name: 'Role Map',
+			fields: {},
+		},
+		'admin/AdminUserSearch': {
+			name: 'Admin Users',
 			fields: {
 				id: 'Id',
 				name: 'Name',
@@ -200,6 +212,13 @@ const lang = {
 				no: 'No',
 				theme: 'Theme',
 				isSuper: 'IsSuper',
+			},
+		},
+		'admin/AdminRoleSearch': {
+			name: 'Admin Roles',
+			fields: {
+				id: 'Id',
+				name: 'Name',
 			},
 		},
 	},

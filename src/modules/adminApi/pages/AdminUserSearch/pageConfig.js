@@ -8,7 +8,7 @@ import { checkPageConfig } from "../../../../helpers/moduleHelper";
 export const Defaults = {
     menu: 'adminApi',
     menuOrder: 0,
-    route: 'api/AdminUserSearch',
+    route: 'admin/AdminUserSearch',
     label: '',
     moduleKey: 'AdminApi',
     pageKey: 'AdminUser',
@@ -35,7 +35,8 @@ export const listFields = [
     <TextField key={1} source="no" sortable={false}/>,
 	<TextField key={2} source="name" sortable={false}/>,
 	<TextField key={3} source="email" sortable={false}/>,
-	<SelectField key={4} source="status" choices={toChoices(enums.Status, "Status")} sortable={false}/>
+	<SelectField key={4} source="status" choices={toChoices(enums.Status, "Status")} sortable={false}/>,
+	<BooleanField key={5} source="isSuper" sortable={false}/>
 ];
 
 

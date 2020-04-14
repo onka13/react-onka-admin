@@ -36,6 +36,8 @@ const lang = {
 			loading: 'Yükleniyor',
 			not_found: 'Sayfa bulunamadı',
 			show: '%{name} #%{id}',
+			empty: 'Kayıt bulunamadı',
+			invite: ''
 		},
 		input: {
 			file: {
@@ -129,6 +131,8 @@ const lang = {
 	menu: {
 		dashboard: 'Ana sayfa',
 		adminApi: 'Admin',
+		changeLang: 'Dili Değiştir',
+		logout: 'Çıkış',
 	},
 	pages: {
 		breadCrumbs: {
@@ -155,9 +159,7 @@ const lang = {
 			AdminApi: 'Admin',
 		},
 	},
-	tabs: {
-		
-	},
+	tabs: {},
 	footer: {
 		privacy: 'Gizlilik',
 		support: 'Destek',
@@ -165,14 +167,16 @@ const lang = {
 		contact: 'İletişim',
 	},
 	other: {
-		
+		adminUser: {
+			roles: 'Roller'
+		}
 	},
 	enums: {
 		Language: {
 			tr: 'Türkçe',
 			en: 'İngilizce',
 		},
-		StatusEnum: {
+		Status: {
 			Active: 'Aktif',
 			Passive: 'Pasif',
 			Deleted: 'Silinmiş',
@@ -183,10 +187,18 @@ const lang = {
 			IOS: 'IOS',
 			WindowsMobile: 'Windows Mobile',
 		},
+		AdminUserTheme: {
+			Light: 'Açık',
+			Dark: 'Koyu',
+		},
 	},
 	resources: {
-		'api/AdminUserSearch': {
-			name: 'AdminUser',
+		'admin/RoleMap': {
+			name: 'Rol Haritası',
+			fields: {},
+		},
+		'admin/AdminUserSearch': {
+			name: 'Admin Kullanıcıları',
 			fields: {
 				id: 'Id',
 				name: 'Name',
@@ -198,6 +210,13 @@ const lang = {
 				no: 'No',
 				theme: 'Theme',
 				isSuper: 'IsSuper',
+			},
+		},
+		'admin/AdminRoleSearch': {
+			name: 'Admin Rolleri',
+			fields: {
+				id: 'Id',
+				name: 'Name',
 			},
 		},
 	},

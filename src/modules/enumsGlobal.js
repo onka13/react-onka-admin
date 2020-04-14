@@ -3,7 +3,7 @@ const enumsGlobal = {
 		tr: "tr",
 		en: "en"
 	},
-	StatusEnum: {
+	Status: {
 		Active: 0,
 		Passive: 1,
 		Deleted: 255

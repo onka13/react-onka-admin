@@ -40,8 +40,8 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
 		if (!options.headers) {
 			options.headers = new Headers({ Accept: 'application/json' });
 		}
-		const token = localStorage.getItem('ErpMainToken');
-		if (token) options.headers.set('Authentication', 'Bearer ' + token);
+		const token = localStorage.getItem('AdminToken');
+		if (token) options.headers.set('ADMINTOKEN', token);
 
 		// options.user = {
 		//     authenticated: true,

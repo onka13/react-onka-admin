@@ -10,26 +10,21 @@ import { withStyles } from '@material-ui/core/styles';
 import { getQueryParam } from '../helpers/moduleHelper';
 import { changeLangDialog } from '../pages/LocaleList';
 import staticHelper from '../helpers/staticHelper';
+import { openAdminUserUpdate } from '../modules/custom/pages/AdminUserUpdate/business';
 
 /*  */
-const MyUserMenu = withRouter(props => {
+const MyUserMenu = withRouter((props) => {
 	const translate = useTranslate();
 	return (
 		<React.Fragment>
-			<IconButton onClick={() => {}}>
+			<IconButton onClick={openAdminUserUpdate}>
 				<Person />
 			</IconButton>
 			<UserMenu {...props} icon={<SettingsIcon />} logout={null} label="">
 				<div>
-					<ListItem button onClick={() => changeLangDialog()} style={{ paddingLeft: 16 }}>
+					<ListItem button onClick={changeLangDialog} style={{ paddingLeft: 16 }}>
 						<LocaleIcon />
 						<ListItemText inset primary={translate('menu.changeLang')} />
-					</ListItem>
-				</div>
-				<div>
-					<ListItem button onClick={() => {}} style={{ paddingLeft: 16 }}>
-						<LocaleIcon />
-						<ListItemText inset primary={translate('menu.changeFirm')} />
 					</ListItem>
 				</div>
 				<div>

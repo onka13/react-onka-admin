@@ -15,6 +15,7 @@ import staticHelper from '../helpers/staticHelper';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import ErpBusiness from '../business/ErpBusiness';
+import { openAdminUserUpdate } from '../modules/custom/pages/AdminUserUpdate/business';
 
 class Menu2 extends Component {
 	resources;
@@ -48,7 +49,9 @@ class Menu2 extends Component {
 				<div className={classes.top}>
 					<Grid container spacing={0} justify="center" alignItems="center" direction="row" className={classes.avatarDiv}>
 						<Avatar className={classes.orangeAvatar}>{avatarLetters}</Avatar>
-						<Button onClick={() => {}} variant="text">
+						<Button onClick={() => {
+							openAdminUserUpdate();
+						}} variant="text">
 							{name}
 						</Button>
 					</Grid>
@@ -77,7 +80,7 @@ class Menu2 extends Component {
 								if (resource.options.hideMenu) return null;
 								//console.log('r', resource.name, resource.options.menuOrder);
 								if (!HasAccess(resource.options.moduleKey, resource.options.pageKey, 'list')) return null;
-								//if(resource.name == "api/RoleMap") return null
+								//if(resource.name == "admin/RoleMap") return null
 								return (
 									<MenuItemLink
 										key={'m' + i}

@@ -1,5 +1,5 @@
 ﻿export default {
-    "api/AdminUserSearch" : {
+    "admin/AdminUserSearch" : {
         name: "AdminUser",
         fields: {
             id:"Id",
