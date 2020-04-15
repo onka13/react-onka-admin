@@ -4,7 +4,7 @@ import staticHelper from './helpers/staticHelper';
 export default {
 	login: ({ username, password }) => {
 		console.log('login', username, password);
-		const request = new Request(config.API_URL + '/admin/public/login', {
+		const request = new Request(config.API_URL + '/AdminApi/public/login', {
 			method: 'POST',
 			body: JSON.stringify({
 				email: username,

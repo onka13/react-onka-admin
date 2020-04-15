@@ -131,6 +131,7 @@ const lang = {
 	menu: {
 		dashboard: 'Ana sayfa',
 		adminApi: 'Admin',
+		accountApi: 'Kullanıcılar',
 		changeLang: 'Dili Değiştir',
 		logout: 'Çıkış',
 	},
@@ -193,11 +194,11 @@ const lang = {
 		},
 	},
 	resources: {
-		'admin/RoleMap': {
+		'AdminApi/RoleMap': {
 			name: 'Rol Haritası',
 			fields: {},
 		},
-		'admin/AdminUserSearch': {
+		'AdminApi/AdminUserSearch': {
 			name: 'Admin Kullanıcıları',
 			fields: {
 				id: 'Id',
@@ -212,13 +213,26 @@ const lang = {
 				isSuper: 'IsSuper',
 			},
 		},
-		'admin/AdminRoleSearch': {
+		'AdminApi/AdminRoleSearch': {
 			name: 'Admin Rolleri',
 			fields: {
 				id: 'Id',
 				name: 'Name',
 			},
 		},
+		"AccountApi/UserSearch" : {
+			name: "Kullanıcılar",
+			fields: {
+				id:"Id",
+				name:"Name",
+				email:"Email",
+				passwordHash:"PasswordHash",
+				emailConfirmed:"EmailConfirmed",
+				lockoutEndDateUtc:"LockoutEndDateUtc",
+				accessFailedCount:"AccessFailedCount",
+				status:"Status"
+			}
+		}
 	},
 };
 

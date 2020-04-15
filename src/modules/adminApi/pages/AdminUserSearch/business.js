@@ -125,7 +125,7 @@ export class UserRolesMap extends React.Component {
 		props.save = this.save;
 		return (
 			<MySimpleForm {...props} toolbar={<MyEditCreateToolbar isEdit={true} pageConfig={pageConfig} />}>
-				<ReferenceArrayInput label="Roles" source="ids" reference="admin/AdminRoleSearch" filter={{}} allowEmpty={true}>
+				<ReferenceArrayInput label="Roles" source="ids" reference="AdminApi/AdminRoleSearch" filter={{}} allowEmpty={true}>
 					<SelectArrayInput optionText="name" />
 				</ReferenceArrayInput>
 			</MySimpleForm>

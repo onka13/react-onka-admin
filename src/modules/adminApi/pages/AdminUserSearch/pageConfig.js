@@ -8,7 +8,7 @@ import { checkPageConfig } from "../../../../helpers/moduleHelper";
 export const Defaults = {
     menu: 'adminApi',
     menuOrder: 0,
-    route: 'admin/AdminUserSearch',
+    route: 'AdminApi/AdminUserSearch',
     label: '',
     moduleKey: 'AdminApi',
     pageKey: 'AdminUser',

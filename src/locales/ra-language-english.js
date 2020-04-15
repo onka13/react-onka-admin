@@ -133,6 +133,7 @@ const lang = {
 	menu: {
 		dashboard: 'Dashboard',
 		adminApi: 'Admin',
+		accountApi: 'Account',
 		changeLang: 'Change Language',
 		logout: 'Logout',
 	},
@@ -195,11 +196,11 @@ const lang = {
 		},
 	},
 	resources: {
-		'admin/RoleMap': {
+		'AdminApi/RoleMap': {
 			name: 'Role Map',
 			fields: {},
 		},
-		'admin/AdminUserSearch': {
+		'AdminApi/AdminUserSearch': {
 			name: 'Admin Users',
 			fields: {
 				id: 'Id',
@@ -214,13 +215,26 @@ const lang = {
 				isSuper: 'IsSuper',
 			},
 		},
-		'admin/AdminRoleSearch': {
+		'AdminApi/AdminRoleSearch': {
 			name: 'Admin Roles',
 			fields: {
 				id: 'Id',
 				name: 'Name',
 			},
 		},
+		"AccountApi/UserSearch" : {
+			name: "Users",
+			fields: {
+				id:"Id",
+				name:"Name",
+				email:"Email",
+				passwordHash:"PasswordHash",
+				emailConfirmed:"EmailConfirmed",
+				lockoutEndDateUtc:"LockoutEndDateUtc",
+				accessFailedCount:"AccessFailedCount",
+				status:"Status"
+			}
+		}
 	},
 };
 

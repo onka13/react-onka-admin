@@ -1,5 +1,5 @@
 export const editLang = lang => {
-	//var user = lang.resources['admin/UserSearch'].fields;
-	//lang.resources['admin/PostSearch'].fields.user = user;
+	//var user = lang.resources['AdminApi/UserSearch'].fields;
+	//lang.resources['AdminApi/PostSearch'].fields.user = user;
 	return lang;
 };

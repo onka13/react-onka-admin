@@ -2,7 +2,7 @@
 
 const Defaults = {
 	menu: 'adminApi',
-	route: 'admin/RoleMap',
+	route: 'AdminApi/RoleMap',
 	label: '',
 	moduleKey: 'AdminApi',
 	pageKey: 'AdminRoleMap',

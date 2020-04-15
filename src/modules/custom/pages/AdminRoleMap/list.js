@@ -118,7 +118,7 @@ const MyGrid = ({ ids, data, basePath, classes }) => {
 		var bodyComp = [];
 		headComp.push(
 			<TableRow key={moduleKey} className={classes.moduleRow}>
-				<TableCell>{translate('pages.modules.' + moduleKey)}</TableCell>
+				<TableCell>{translate('pages.modules.' + moduleKey.replace('Module', ''))}</TableCell>
 				{roles.map((role, j) => {
 					return (
 						<TableCell key={j}>
@@ -150,7 +150,7 @@ const MyGrid = ({ ids, data, basePath, classes }) => {
 			var extraActions = actions.filter((x) => defaultActions.indexOf(x) == -1);
 			bodyComp.push(
 				<TableRow key={pageKey} className={classes.row}>
-					<TableCell>{translate('resources.admin/' + pageKey + 'Search.name', { _: pageKey })}</TableCell>
+					<TableCell>{translate('resources.AdminApi/' + pageKey + 'Search.name', { _: pageKey })}</TableCell>
 					{roles.map((role, j) => {
 						return (
 							<TableCell key={j}>
@@ -201,7 +201,7 @@ const MyGrid = ({ ids, data, basePath, classes }) => {
 					<Button
 						onClick={() => {
 							ErpBusiness.instance()
-								.callApi('admin/RoleMap/updateRoleActionList', null, {
+								.callApi('AdminApi/RoleMap/updateRoleActionList', null, {
 									method: 'get',
 								})
 								.then((response) => {
@@ -237,7 +237,7 @@ class MySaveButtonClass extends React.Component {
 		);
 		var selectedList = Object.keys(roleValues).filter((x) => roleValues[x]);
 
-		ErpBusiness.instance().callApi('admin/RoleMap/save', {
+		ErpBusiness.instance().callApi('AdminApi/RoleMap/save', {
 			roles: selectedList,
 		});
 	};

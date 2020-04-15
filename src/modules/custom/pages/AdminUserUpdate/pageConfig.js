@@ -2,7 +2,7 @@
 
 export const Defaults = {
 	menu: "",
-	route: "admin/AdminUserUpdate",
+	route: "AdminApi/AdminUserUpdate",
 	label: "",
 	moduleKey: "AdminApi",
 	pageKey: "AdminUserUpdate",

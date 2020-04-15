@@ -80,7 +80,7 @@ class Menu2 extends Component {
 								if (resource.options.hideMenu) return null;
 								//console.log('r', resource.name, resource.options.menuOrder);
 								if (!HasAccess(resource.options.moduleKey, resource.options.pageKey, 'list')) return null;
-								//if(resource.name == "admin/RoleMap") return null
+								//if(resource.name == "AdminApi/RoleMap") return null
 								return (
 									<MenuItemLink
 										key={'m' + i}
