@@ -51,7 +51,7 @@ class Menu2 extends Component {
 						<Avatar className={classes.orangeAvatar}>{avatarLetters}</Avatar>
 						<Button onClick={() => {
 							openAdminUserUpdate();
-						}} variant="text">
+						}} variant="text" size="small">
 							{name}
 						</Button>
 					</Grid>

@@ -15,6 +15,69 @@ import { getQueryParam } from '../helpers/moduleHelper';
 import ErpBusiness from '../business/ErpBusiness';
 import config from '../config';
 
+const styles = (theme) =>
+	createStyles({
+		root: {
+			display: 'flex',
+			flexDirection: 'column',
+			zIndex: 1,
+			minHeight: '100vh',
+			backgroundColor: theme.palette.background.default,
+			color: theme.palette.text.primary,
+			position: 'relative',
+			//minWidth: 'fit-content',
+			width: '100%',
+		},
+		appFrame: {
+			display: 'flex',
+			flexDirection: 'column',
+			flex: 1,
+		},
+		contentWithSidebar: {
+			display: 'flex',
+			flexGrow: 1,
+			marginTop: 48,
+		},
+		content: {
+			display: 'flex',
+			flexDirection: 'column',
+			flex: 1,
+			flexGrow: 1,
+			flexBasis: 0,
+			backgroundImage: 'linear-gradient(' + theme.mixins.vs.rightSideBgColors + ')',
+			//padding: theme.spacing(3),
+			//[theme.breakpoints.up("xs")]: {
+			//	paddingLeft: 5
+			//},
+			//[theme.breakpoints.down("sm")]: {
+			//	padding: 0
+			//}
+		},
+		contentInner: {
+			paddingLeft: 30,
+			paddingRight: 30,
+			minHeight: 300,
+			display: 'flex',
+			flexDirection: 'column',
+			justifyContent: 'space-between',
+			[theme.breakpoints.down("sm")]: {
+				padding: 0,
+				paddingTop: 15
+			}
+		},
+		footer: {
+			marginTop: 15,
+			//marginLeft: 30,
+			//marginRight: 30,
+			marginBottom: 20,
+			display: 'flex',
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+			alignItems: 'center',
+			paddingBottom: 100
+		},
+	});
+
 const sanitizeRestProps = ({ staticContext, history, location, match, ...props }) => props;
 
 class Layout extends Component {
@@ -97,90 +160,8 @@ class Layout extends Component {
 	}
 }
 
-//const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
-//
-//Layout.propTypes = {
-//	appBar: componentPropType,
-//	children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-//	classes: PropTypes.object,
-//	className: PropTypes.string,
-//	customRoutes: PropTypes.array,
-//	dashboard: componentPropType,
-//	error: componentPropType,
-//	history: PropTypes.object.isRequired,
-//	logout: PropTypes.oneOfType([PropTypes.node, PropTypes.func, PropTypes.string]),
-//	menu: componentPropType,
-//	notification: componentPropType,
-//	open: PropTypes.bool,
-//	sidebar: componentPropType,
-//	title: PropTypes.node.isRequired
-//};
 
-// Layout.defaultProps = {
-// 	appBar: AppBar,
-// 	error: Error,
-// 	menu: Menu,
-// 	notification: Notification,
-// 	sidebar: Sidebar
-// };
-
-
-const styles = theme =>
-	createStyles({
-		root: {
-			display: 'flex',
-			flexDirection: 'column',
-			zIndex: 1,
-			minHeight: '100vh',
-			backgroundColor: theme.palette.background.default,
-			color: theme.palette.text.primary,
-			position: 'relative',
-			//minWidth: 'fit-content',
-			width: '100%',
-		},
-		appFrame: {
-			display: 'flex',
-			flexDirection: 'column',
-			flex: 1,
-		},
-		contentWithSidebar: {
-			display: 'flex',
-			flexGrow: 1,
-			marginTop: 48,
-		},
-		content: {
-			display: 'flex',
-			flexDirection: 'column',
-			flex: 1,
-			flexGrow: 1,
-			flexBasis: 0,
-			backgroundImage: 'linear-gradient(' + theme.mixins.vs.rightSideBgColors + ')',
-			//padding: theme.spacing(3),
-			//[theme.breakpoints.up("xs")]: {
-			//	paddingLeft: 5
-			//},
-			//[theme.breakpoints.down("sm")]: {
-			//	padding: 0
-			//}
-		},
-		contentInner: {
-			paddingLeft: 30,
-			paddingRight: 30,
-		},
-		footer: {
-			marginTop: 15,
-			//marginLeft: 30,
-			//marginRight: 30,
-			marginBottom: 20,
-			display: 'flex',
-			flexDirection: 'row',
-			justifyContent: 'space-between',
-			alignItems: 'center',
-		},
-	});
-
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
 	open: state.admin.ui.sidebarOpen,
 });
 
@@ -204,12 +185,5 @@ const LayoutWithTheme = ({ theme: themeOverride, ...props }) => {
 	);
 };
 
-// LayoutWithTheme.propTypes = {
-// 	theme: PropTypes.object
-// };
-
-// LayoutWithTheme.defaultProps = {
-// 	theme: defaultTheme
-// };
 
 export default LayoutWithTheme;

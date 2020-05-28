@@ -11,12 +11,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import ErpBusiness from '../business/ErpBusiness';
 
 export const VipLink = ({ to, ...rest }) => <Button component={Link} to={to} {...rest} />;
 
 var bcStyle = { margin: 0, padding: 0, minWidth: 0 };
 
-export const crumbs = function(basePath, title) {
+export const crumbs = function (basePath, title) {
 	//console.log('crumbs', arguments);
 	const items = [];
 	for (let i = 0; i < arguments.length; i++) {
@@ -42,7 +43,15 @@ export const crumbs = function(basePath, title) {
 	);
 };
 
-const useStyles = makeStyles(theme => ({
+export const PageLinkTitle = (props) => {
+	return (
+		<Button component={Link} to={`/${props.basePath}`} style={bcStyle} color="default">
+			{ErpBusiness.instance().translate('resources.' + props.basePath + '.name')}
+		</Button>
+	);
+};
+
+const useStyles = makeStyles((theme) => ({
 	root: {
 		display: 'flex',
 	},
@@ -54,10 +63,10 @@ export const MenuListComposition = (btnProps, btnText, items) => {
 	const anchorRef = React.useRef(null);
 
 	const handleToggle = () => {
-		setOpen(prevOpen => !prevOpen);
+		setOpen((prevOpen) => !prevOpen);
 	};
 
-	const handleClose = event => {
+	const handleClose = (event) => {
 		if (anchorRef.current && anchorRef.current.contains(event.target)) {
 			return;
 		}
@@ -92,6 +101,7 @@ export const MenuListComposition = (btnProps, btnText, items) => {
 					onClick={handleToggle}
 					color="primary"
 					variant="text"
+					size="small"
 					{...btnProps}
 				>
 					<ExpandMore /> {btnText}
@@ -107,7 +117,7 @@ export const MenuListComposition = (btnProps, btnText, items) => {
 											return (
 												<MenuItem
 													key={i}
-													onClick={e => {
+													onClick={(e) => {
 														onClick();
 														return handleClose(e);
 													}}

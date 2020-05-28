@@ -7,4 +7,5 @@ import Settings from "@material-ui/icons/Settings";
 export const menuList = [
   { name: "adminApi", label: "Admin", icon: <Person /> },  
   { name: "accountApi", label: "Account", icon: <AccountBox /> },  
+  { name: "testApi", label: "Test", icon: <Settings /> },  
 ];

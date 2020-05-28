@@ -21,6 +21,7 @@ const lang = {
 			show: 'Show',
 			sort: 'Sort',
 			undo: 'Undo',
+			confirm: 'Confirm',
 		},
 		boolean: {
 			null: '',
@@ -36,7 +37,7 @@ const lang = {
 			loading: 'Loading',
 			not_found: 'Not Found',
 			show: '%{name} #%{id}',
-			empty: 'Kayıt bulunamadı',
+			empty: 'No record found',
 			invite: '',
 		},
 		input: {
@@ -134,6 +135,7 @@ const lang = {
 		dashboard: 'Dashboard',
 		adminApi: 'Admin',
 		accountApi: 'Account',
+		testApi: 'Test',
 		changeLang: 'Change Language',
 		logout: 'Logout',
 	},
@@ -159,7 +161,10 @@ const lang = {
 			assignRole: 'Assign Role',
 		},
 		modules: {
+			Admin: 'Admin',
 			AdminApi: 'Admin',
+			AccountApi: 'Account',
+			TestApi: 'Test',
 		},
 	},
 	tabs: {},
@@ -171,8 +176,8 @@ const lang = {
 	},
 	other: {
 		adminUser: {
-			roles: 'Roles'
-		}
+			roles: 'Roles',
+		},
 	},
 	enums: {
 		Language: {
@@ -222,19 +227,49 @@ const lang = {
 				name: 'Name',
 			},
 		},
-		"AccountApi/UserSearch" : {
-			name: "Users",
+		'AccountApi/UserSearch': {
+			name: 'Users',
 			fields: {
-				id:"Id",
-				name:"Name",
-				email:"Email",
-				passwordHash:"PasswordHash",
-				emailConfirmed:"EmailConfirmed",
-				lockoutEndDateUtc:"LockoutEndDateUtc",
-				accessFailedCount:"AccessFailedCount",
-				status:"Status"
-			}
-		}
+				id: 'Id',
+				name: 'Name',
+				email: 'Email',
+				passwordHash: 'PasswordHash',
+				emailConfirmed: 'EmailConfirmed',
+				lockoutEndDateUtc: 'LockoutEndDateUtc',
+				accessFailedCount: 'AccessFailedCount',
+				status: 'Status',
+			},
+		},
+		'TestApi/BookEfSearch': {
+			name: 'Book Entity Framework',
+			fields: {
+				id: 'Id',
+				name: 'Name',
+				price: 'Price',
+				category: 'Category',
+				author: 'Author',
+			},
+		},
+		'TestApi/BookElasticSearch': {
+			name: 'Book Elasticsearch',
+			fields: {
+				id: 'Id',
+				name: 'Name',
+				price: 'Price',
+				category: 'Category',
+				author: 'Author',
+			},
+		},
+		'TestApi/BookMongoSearch': {
+			name: 'Book MongoDB',
+			fields: {
+				id: 'Id',
+				name: 'Name',
+				price: 'Price',
+				category: 'Category',
+				author: 'Author',
+			},
+		},
 	},
 };
 

@@ -15,6 +15,8 @@ import MyLayout from './components/MyLayout';
 import custom from './modules/custom';
 import adminApi from './modules/adminApi';
 import accountApi from './modules/accountApi';
+import testApi from './modules/testApi';
+
 import { getTheme } from './business/MyThemes';
 
 const LayoutCustom = props => {
@@ -44,6 +46,7 @@ const App = () => {
 			{custom}
 			{adminApi}
 			{accountApi}
+			{testApi}
 			<ExtraComps />
 		</Admin>
 	);

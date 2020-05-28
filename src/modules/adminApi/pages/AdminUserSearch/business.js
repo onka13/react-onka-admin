@@ -27,6 +27,7 @@ export const ListExtraButtons = ({ record = {} }) => {
 					}}
 					color="primary"
 					variant="text"
+					size="small"
 				>
 					{title}
 				</Button>

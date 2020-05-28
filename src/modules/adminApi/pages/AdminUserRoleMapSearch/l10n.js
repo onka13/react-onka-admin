@@ -1,6 +1,6 @@
 ﻿export default {
-    "AdminApi/AdminUserRoleMapSearch" : {
-        name: "AdminUserRoleMap",
+    'AdminApi/AdminUserRoleMapSearch' : {
+        name: 'AdminUserRoleMap',
         fields: {
             id:"Id",
 			userId:"UserId",

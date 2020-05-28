@@ -50,10 +50,11 @@ const appBarStyles = () => {
 
 	return {
 		title: {
-			flex: 1,
+			flex: 2,
 			textOverflow: 'ellipsis',
 			whiteSpace: 'nowrap',
 			overflow: 'hidden',
+			textAlign: 'center'
 		},
 		spacer: {
 			flex: 1,
@@ -66,18 +67,14 @@ export default withStyles(appBarStyles)(({ classes, ...props }) => {
 		<AppBar {...props} userMenu={<MyUserMenu />} color="primary">
 			<div style={{ display: 'flex', alignItems: 'baseline' }}>
 				<Typography variant="h5" style={{ marginRight: 15 }}>
-					{/* {staticHelper.getFirmTitle()} */}
+					{/* Title */}
 				</Typography>
-				{/* <Typography variant="subtitle1">{staticHelper.getDivisionTitle()}</Typography> */}
+				{/* <Typography variant="subtitle1">Sub title</Typography> */}
 			</div>
-			{/* position="static" */}
 			{/* <AppBarSearch /> */}
-			{/* <Typography variant="h4" color="inherit" className={classes.title} id="react-admin-title" /> */}
-			{/* <Typography variant="h4" color="inherit">
-				ERP
-			</Typography> */}
 			<span className={classes.spacer} />
-			{/* <LoadingIndicator /> */}
+			<Typography variant="h6" color="inherit" className={classes.title} id="react-admin-title" />
+			<span className={classes.spacer} />
 		</AppBar>
 	);
 });

@@ -37,7 +37,7 @@ const lang = {
 			not_found: 'Sayfa bulunamadı',
 			show: '%{name} #%{id}',
 			empty: 'Kayıt bulunamadı',
-			invite: ''
+			invite: '',
 		},
 		input: {
 			file: {
@@ -132,6 +132,7 @@ const lang = {
 		dashboard: 'Ana sayfa',
 		adminApi: 'Admin',
 		accountApi: 'Kullanıcılar',
+		testApi: 'Test',
 		changeLang: 'Dili Değiştir',
 		logout: 'Çıkış',
 	},
@@ -157,7 +158,10 @@ const lang = {
 			assignRole: 'Rol Atama',
 		},
 		modules: {
+			Admin: 'Admin',
 			AdminApi: 'Admin',
+			AccountApi: 'Account',
+			TestApi: 'Test',
 		},
 	},
 	tabs: {},
@@ -169,8 +173,8 @@ const lang = {
 	},
 	other: {
 		adminUser: {
-			roles: 'Roller'
-		}
+			roles: 'Roller',
+		},
 	},
 	enums: {
 		Language: {
@@ -220,19 +224,49 @@ const lang = {
 				name: 'Name',
 			},
 		},
-		"AccountApi/UserSearch" : {
-			name: "Kullanıcılar",
+		'AccountApi/UserSearch': {
+			name: 'Kullanıcılar',
 			fields: {
-				id:"Id",
-				name:"Name",
-				email:"Email",
-				passwordHash:"PasswordHash",
-				emailConfirmed:"EmailConfirmed",
-				lockoutEndDateUtc:"LockoutEndDateUtc",
-				accessFailedCount:"AccessFailedCount",
-				status:"Status"
-			}
-		}
+				id: 'Id',
+				name: 'Name',
+				email: 'Email',
+				passwordHash: 'PasswordHash',
+				emailConfirmed: 'EmailConfirmed',
+				lockoutEndDateUtc: 'LockoutEndDateUtc',
+				accessFailedCount: 'AccessFailedCount',
+				status: 'Status',
+			},
+		},
+		'TestApi/BookEfSearch': {
+			name: 'Book Entity Framework',
+			fields: {
+				id: 'Id',
+				name: 'Name',
+				price: 'Price',
+				category: 'Category',
+				author: 'Author',
+			},
+		},
+		'TestApi/BookElasticSearch': {
+			name: 'Book Elasticsearch',
+			fields: {
+				id: 'Id',
+				name: 'Name',
+				price: 'Price',
+				category: 'Category',
+				author: 'Author',
+			},
+		},
+		'TestApi/BookMongoSearch': {
+			name: 'Book MongoDB',
+			fields: {
+				id: 'Id',
+				name: 'Name',
+				price: 'Price',
+				category: 'Category',
+				author: 'Author',
+			},
+		},
 	},
 };
 

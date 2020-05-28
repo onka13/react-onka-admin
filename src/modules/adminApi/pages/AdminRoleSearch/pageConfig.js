@@ -1,9 +1,11 @@
 ﻿
-import React, { Fragment } from "react";
-import { required,minLength,maxLength,minValue,maxValue,number,regex,email,choices,TextInput,ReferenceInput,SelectInput,ShowButton,NumberInput,DisabledInput,DateInput,LongTextInput,BooleanInput,AutocompleteInput,NullableBooleanInput,TextField,DateField,RichTextField,NumberField,BooleanField,SelectField,ReferenceField } from "react-admin";
-import { getDateOptions, getQueryParam, MySelectField, toChoices } from "../../../../helpers/moduleHelper";
-import enums from "../../enums";
-import { checkPageConfig } from "../../../../helpers/moduleHelper";
+import React, { Fragment } from 'react';
+import { required, minLength, maxLength, minValue, maxValue, number, regex, email, choices, ShowButton } from 'react-admin';
+import { getDateOptions, getQueryParam, MySelectField, toChoices, toChoiceLabel } from '../../../../helpers/moduleHelper';
+import enums from '../../enums';
+import { checkPageConfig } from '../../../../helpers/moduleHelper';
+import _get from 'lodash/get';
+import CC from '../../../../components/CustomComponents';
 
 export const Defaults = {
     menu: 'adminApi',
@@ -25,25 +27,31 @@ export const pageConfig = checkPageConfig({
 }, Defaults);
 
 export const filterFields = [
-    <TextInput key={0} alwaysOn source="name" validate={[maxLength(200)]}/>
+    <CC.TextInput key={0} alwaysOn source="name" validate={[maxLength(200)]} extraOptions={{ maxLength: 200 }} />
 ];
 
 export const listFields = [
-    <TextField key={1} source="name" sortable={false}/>
+    <CC.TextField key={1} source="name" sortable={false} />
+];
+
+export const exportHeaders = ['name'];
+
+export const exportFields = (data, get = _get) => [
+    { value: get(data, 'name'), type: 'string' }
 ];
 
 
 export const detailFields = (prefix, extraProps) => {
 	return [
-        <TextField key={0} {...extraProps} source={prefix+"id"} sortable={true}/>,
-		<TextField key={1} {...extraProps} source={prefix+"name"} sortable={false}/>
+        <CC.TextField key={0} source={prefix+"id"} sortable={true} {...extraProps}/>,
+		<CC.TextField key={1} source={prefix+"name"} sortable={false} {...extraProps}/>
 	];
 };
 
 
 export const inputFields = (prefix, extraProps) => {
 	return [
-        <TextInput disabled key={0} {...extraProps} source={prefix+"id"} />,
-		<TextInput key={1} {...extraProps} source={prefix+"name"} validate={[required(),maxLength(200)]}/>
+        <CC.TextInput disabled key={0} source={prefix+"id"} {...extraProps}/>,
+		<CC.TextInput key={1} source={prefix+"name"} validate={[required(),maxLength(200)]} extraOptions={{ maxLength: 200 }} {...extraProps}/>
 	];
 };

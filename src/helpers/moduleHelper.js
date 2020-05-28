@@ -27,7 +27,7 @@ import {
 	useTranslate,
 } from 'react-admin';
 import { useForm } from 'react-final-form';
-import { InputAdornment, IconButton, Typography, Toolbar } from '@material-ui/core';
+import { InputAdornment, IconButton, Typography, Toolbar, LinearProgress } from '@material-ui/core';
 import Label from '@material-ui/icons/Label';
 import MoreHoriz from '@material-ui/icons/MoreHoriz';
 import ArrowBack from '@material-ui/icons/ArrowBack';
@@ -37,18 +37,20 @@ import set from 'lodash/set';
 import config from '../config';
 import staticHelper from './staticHelper';
 import { removeEmptyObjects } from '../business/utils';
-import { crumbs } from './componentHelper';
+import { crumbs, PageLinkTitle } from './componentHelper';
 import enumsGlobal from '../modules/enumsGlobal';
 import { makeStyles } from '@material-ui/styles';
 import Loadable from 'react-loadable';
 import MyToolbar from '../components/MyToolbar';
 import { ViewComp } from '../components/ExtraComponents';
 import ErpBusiness from '../business/ErpBusiness';
+import zipcelx from 'zipcelx';
+import moment from 'moment';
 
 export const toChoices = (obj, key, minValue, maxValue, values, exclude) => {
 	if (!obj) obj = {};
 	return Object.keys(obj)
-		.filter(x => {
+		.filter((x) => {
 			var res = true;
 			if (minValue) res = res && obj[x] >= minValue;
 			if (maxValue) res = res && obj[x] <= maxValue;
@@ -56,14 +58,14 @@ export const toChoices = (obj, key, minValue, maxValue, values, exclude) => {
 			if (exclude) res = res && values.indexOf(obj[x]) == -1;
 			return res;
 		})
-		.map(x => {
+		.map((x) => {
 			return { id: obj[x], name: key ? 'enums.' + key + '.' + x : x };
 		});
 };
 
 export const toChoiceLabel = (obj, enumTypeName, value) => {
 	if (!obj) obj = {};
-	var e = Object.keys(obj).filter(x => {
+	var e = Object.keys(obj).filter((x) => {
 		return obj[x] == value;
 	});
 	return e.length > 0 ? ErpBusiness.instance().translate('enums.' + enumTypeName + '.' + e[0]) : value;
@@ -108,7 +110,7 @@ export const checkPageConfig = (pageConfig, defaults) => {
 		pageConfig.delete = false;
 	} else {
 		var isOwner = HasAccess(defaults.moduleKey, defaults.pageKey, 'admin');
-		['export', 'get', 'new', 'edit', 'delete'].forEach(key => {
+		['export', 'get', 'new', 'edit', 'delete'].forEach((key) => {
 			if (pageConfig[key]) {
 				pageConfig[key] = isOwner || HasAccess(defaults.moduleKey, defaults.pageKey, key);
 			}
@@ -130,6 +132,17 @@ export const checkPageConfig = (pageConfig, defaults) => {
 	return pageConfig;
 };
 
+const useToolbarStyle = makeStyles((theme) => {
+	return {
+		root: {},
+		regular: {
+			alignSelf: 'flex-end',
+			display: 'block',
+			minHeight: 'auto',
+		},
+	};
+});
+
 export const ListActions = ({
 	bulkActions,
 	basePath,
@@ -148,8 +161,9 @@ export const ListActions = ({
 	if (!pageConfig) pageConfig = {};
 	var hideActions = getQueryParam('hideActions') == '1';
 	if (hideActions) extraButtons = null;
+	const toolbarStyle = useToolbarStyle();
 	return (
-		<Toolbar>
+		<Toolbar classes={toolbarStyle}>
 			{bulkActions &&
 				React.cloneElement(bulkActions, {
 					basePath,
@@ -158,6 +172,7 @@ export const ListActions = ({
 					selectedIds,
 					onUnselectItems,
 				})}
+			{pageConfig.new && <CreateButton basePath={basePath} />}
 			{filters &&
 				React.cloneElement(filters, {
 					resource,
@@ -166,7 +181,6 @@ export const ListActions = ({
 					filterValues,
 					context: 'button',
 				})}
-			{pageConfig.new && <CreateButton basePath={basePath} />}
 			{pageConfig.export && <ExportButton resource={resource} sort={currentSort} filter={filterValues} exporter={exporter} />}
 			{typeof extraButtons == 'function' ? extraButtons() : extraButtons}
 			{/* <RefreshButton /> */}
@@ -186,20 +200,20 @@ export const getDateOptions = () => {
 	};
 };
 
-export const getQueryParam = name => {
+export const getQueryParam = (name) => {
 	var arr = window.location.search.split('?');
 	if (arr.length <= 1) return '';
 	arr.shift(); // remove first
 	var query = arr.join('?');
 	arr = query
 		.split('&')
-		.map(x => x.split('='))
-		.filter(x => x[0] == name);
+		.map((x) => x.split('='))
+		.filter((x) => x[0] == name);
 	if (arr.length > 0) return arr[0][1];
 	return null;
 };
 
-const getDefaultValuesFromParam = current => {
+const getDefaultValuesFromParam = (current) => {
 	return { ...current, ...getDefaultValuesAsJson() };
 };
 
@@ -215,7 +229,7 @@ export const getDefaultValuesAsJson = () => {
 	return {};
 };
 
-const useGridStyle = makeStyles(theme => {
+const useGridStyle = makeStyles((theme) => {
 	return {
 		rowEven: {
 			backgroundColor: theme.mixins.vs.rowEven,
@@ -224,22 +238,27 @@ const useGridStyle = makeStyles(theme => {
 	};
 });
 
-const useRaListStyle = makeStyles(theme => {
+const useRaListStyle = makeStyles((theme) => {
 	return {
+		main: {
+			marginTop: 10,
+		},
 		content: {
 			position: 'unset',
 		},
 	};
 });
 
-export const MyListComponent = props => {
+export const MyListComponent = (props) => {
 	//console.log("MyListComponent", props);
 
+	const { pageConfig, exportFields, exportHeaders, ...rest } = props;
 	var actions = props.actions;
 	var filters = props.filters;
 	var filterDefaultValues = getDefaultValuesFromParam(props.filterDefaultValues);
 	var pagination = props.pagination;
 	var perPage = props.perPage;
+	var exporter = props.exporter;
 
 	if (getQueryParam('hideFilters') == '1') {
 		filters = null;
@@ -257,17 +276,36 @@ export const MyListComponent = props => {
 	}
 	const gridStyles = useGridStyle();
 	const listStyles = useRaListStyle();
+
+	if (!exporter) {
+		exporter = (data) => {
+			var dataForExport = data.map((x) => exportFields(x));
+			var headers = exportHeaders.map((x) => ({ value: ErpBusiness.instance().translate(getLabelPath(pageConfig.defaults.route, x)), type: 'string' }));
+			dataForExport.unshift(headers);
+
+			const config = {
+				filename: ErpBusiness.instance().translate('resources.' + pageConfig.defaults.route + '.name') + '_' + moment().format('YYYYMMDD_HHmm'),
+				sheet: {
+					data: dataForExport,
+				},
+			};
+
+			zipcelx(config);
+		};
+	}	
 	return (
 		<React.Fragment>
-			{getBreadCrumbs(props.resource, 'list')}
+			{/* {getBreadCrumbs(props.resource, 'list')} */}
 			<List
-				{...props}
+				{...rest}
+				title={<PageLinkTitle basePath={props.resource} />}
 				filters={filters}
 				actions={actions}
 				filterDefaultValues={filterDefaultValues}
 				pagination={pagination}
 				perPage={perPage}
 				classes={listStyles}
+				exporter={exporter}
 			>
 				{React.cloneElement(props.children, {
 					classes: gridStyles,
@@ -350,7 +388,7 @@ export class MySimpleForm extends React.Component {
 	}
 }
 
-export const MyTabbedForm = props => {
+export const MyTabbedForm = (props) => {
 	var defaultValue = getDefaultValuesFromParam(props.defaultValue);
 
 	return <TabbedForm {...props} />;
@@ -369,7 +407,7 @@ export const HasAccess = (moduleKey, pageKey, actionKey) => {
 	return false;
 };
 
-const omitId = obj => {
+const omitId = (obj) => {
 	if (!obj || typeof obj != 'object') return obj;
 	if (Array.isArray(obj)) {
 		for (const key in obj) {
@@ -397,19 +435,8 @@ export const MyEditActions = (topProps, pageConfig, extraButtons) => {
 		return (
 			<div className="flex-space-between">
 				<div>
-					{getQueryParam('dialog') == '1' && getQueryParam('noback') != '1' && (
-						<Button
-							onClick={() => {
-								window.history.go(-1);
-							}}
-							color="primary"
-							label="ra.action.back"
-						>
-							<ArrowBack />
-						</Button>
-					)}
 				</div>
-				<TopToolbar style={{ zIndex: 2, alignItems: 'flex-end', minHeight: 0 }}>
+				<TopToolbar style={{ zIndex: 2, alignItems: 'center', minHeight: 0 }}>
 					{extraButtons
 						? React.cloneElement(extraButtons, {
 								record: data,
@@ -430,17 +457,6 @@ export const MyCreateActions = (topProps, pageConfig) => {
 		return (
 			<div className="flex-space-between">
 				<div>
-					{getQueryParam('dialog') == '1' && getQueryParam('noback') != '1' && (
-						<Button
-							onClick={() => {
-								window.history.go(-1);
-							}}
-							color="primary"
-							label="ra.action.back"
-						>
-							<ArrowBack />
-						</Button>
-					)}
 				</div>
 				{/* <TopToolbar style={{ zIndex: 2, alignItems: "flex-end", minHeight: 0, paddinTop: 10 }}></TopToolbar> */}
 			</div>
@@ -454,17 +470,6 @@ export const getDetailActions = (topProps, pageConfig) => {
 	const Trans = ({ basePath, data, resource }) => (
 		<div className="flex-space-between">
 			<div>
-				{getQueryParam('dialog') == '1' && getQueryParam('noback') != '1' && (
-					<Button
-						onClick={() => {
-							window.history.go(-1);
-						}}
-						color="primary"
-						label="ra.action.back"
-					>
-						<ArrowBack />
-					</Button>
-				)}
 			</div>
 			{!hideActions && (
 				<TopToolbar style={{ zIndex: 2, alignItems: 'flex-end', marginRight: 30 }}>
@@ -478,7 +483,7 @@ export const getDetailActions = (topProps, pageConfig) => {
 	return <Trans />;
 };
 
-export const getL10nPageTitleKey = defaults => {
+export const getL10nPageTitleKey = (defaults) => {
 	return 'resources.' + defaults.route + '.name';
 };
 
@@ -489,7 +494,7 @@ export const getCustomTitle = (defaults, recordField) => {
 	return <Trans />;
 };
 
-export const getBreadCrumbs = function(resource, key) {
+export const getBreadCrumbs = function (resource, key) {
 	console.log('crumbs', arguments);
 	if (getQueryParam('hideBreadCrumbs') == '1') return null;
 	const keys = [];
@@ -502,9 +507,6 @@ export const getBreadCrumbs = function(resource, key) {
 
 	return (
 		<div style={{ marginTop: 30 }}>
-			<Typography variant="h6" color="inherit">
-				{translate('resources.' + resource + '.name')}
-			</Typography>
 			{crumbs('/' + resource, translate('resources.' + resource + '.name'), translate('pages.breadCrumbs.' + key), ...keys)}
 		</div>
 	);
@@ -513,10 +515,10 @@ export const getBreadCrumbs = function(resource, key) {
 export const MyEditCreateToolbar = ({ isEdit, pageConfig, undoable, hideSaveAndNew, redirect, ...props }) => {
 	//console.log("MyEditCreateToolbar", pageConfig);
 	const form = useForm();
-	if (redirect === undefined) {
+	/*if (redirect === undefined) {
 		// “edit”, “show”, “list”, and false to disable redirection
 		redirect = pageConfig.edit ? 'edit' : 'list';
-	}
+	}*/
 	if (hideSaveAndNew) return null;
 	return (
 		<MyToolbar {...props}>
@@ -578,7 +580,7 @@ export const getEditFormProps = (isEdit, record, route, callback) => {
 			}
 			ErpBusiness.instance()
 				.callApi(url, newData, options)
-				.then(response => {
+				.then((response) => {
 					callback && callback(response, newData);
 				});
 		},
@@ -590,7 +592,7 @@ export const fieldsFilterSort0 = (columns, prefix, onlyFields, excludeFields) =>
 	//console.log("fieldsFilterSort", excludeFields)
 	if (onlyFields) {
 		columns = columns
-			.filter(x => x && onlyFields.filter(y => x.props && prefix + y == x.props.source).length > 0)
+			.filter((x) => x && onlyFields.filter((y) => x.props && prefix + y == x.props.source).length > 0)
 			.sort((a, b) => {
 				var aIndex = onlyFields.indexOf(a.props.source.replace(prefix, ''));
 				var bIndex = onlyFields.indexOf(b.props.source.replace(prefix, ''));
@@ -598,7 +600,7 @@ export const fieldsFilterSort0 = (columns, prefix, onlyFields, excludeFields) =>
 			});
 	}
 	if (excludeFields) {
-		columns = columns.filter(x => x && excludeFields.filter(y => x.props && prefix + y == x.props.source).length == 0);
+		columns = columns.filter((x) => x && excludeFields.filter((y) => x.props && prefix + y == x.props.source).length == 0);
 	}
 
 	return columns;
@@ -619,7 +621,7 @@ export const fieldsFilterSort = (columns, prefix, onlyFields, excludeFields) => 
 };
 
 export const fieldsReplace = (columns, prefix, fieldName, newComponent) => {
-	var i = columns.findIndex(x => x && x.props.source == prefix + fieldName);
+	var i = columns.findIndex((x) => x && x.props.source == prefix + fieldName);
 	if (i != -1) columns[i] = newComponent;
 };
 
@@ -649,7 +651,7 @@ export const TextInputSelectDialog = (
 						{...extras}
 						{...rest}
 						source={prefix + source}
-						format={v => {
+						format={(v) => {
 							return defaultValueFunc(scopedFormData);
 						}}
 						InputProps={{
@@ -667,7 +669,7 @@ export const TextInputSelectDialog = (
 												addSelectField: true,
 												hideActions: true,
 												hideBreadCrumbs: true,
-												iframeCallback: data => {
+												iframeCallback: (data) => {
 													form.change(prefix + relSource, data);
 													form.change(prefix + source, data.id);
 													set(formData, getSource(prefix + relSource), data);
@@ -701,15 +703,16 @@ export const getScopedFormData = (formData, path) => {
 	return get(formData, path.replace(/^[\.]+|[\.]+$/g, '')) || {};
 };
 
-export const MyListFilters = filterFields => {
-	const useStyles = makeStyles(theme => ({
+export const MyListFilters = (filterFields) => {
+	const useStyles = makeStyles((theme) => ({
 		form: {
-			marginLeft: theme.spacing(5),
+			//marginLeft: theme.spacing(5),
+			marginTop: 0,
 		},
 	}));
 	if (getQueryParam('hideDefaultFilters') == '1') {
 		const defaultValues = Object.keys(getDefaultValuesAsJson());
-		filterFields = filterFields.filter(x => x && defaultValues.filter(y => y == x.props.source).length == 0);
+		filterFields = filterFields.filter((x) => x && defaultValues.filter((y) => y == x.props.source).length == 0);
 		//console.log("MyListFilters", defaultValues, filterFields);
 	}
 	for (const key in filterFields) {
@@ -719,20 +722,20 @@ export const MyListFilters = filterFields => {
 		});
 	}
 	return (
-		<Filter resource="" className={useStyles().form}>
+		<Filter resource="" className={useStyles().form + ' form-filters'}>
 			{filterFields}
 		</Filter>
 	);
 };
 
 export const CustomCreate = ({ hasFileUpload, defaultValue, pageConfig, actions, ...props }) => {
-	//var record = fixDefaultValue(defaultValue, false, hasFileUpload, props.form);
-	//record = { ...record, ...(props.location.state || {}).record };
+	var record = fixDefaultValue(defaultValue, false, hasFileUpload, props.form);
+	record = { ...record, ...(props.location.state || {}).record };
 	if (!actions) actions = MyCreateActions(props, pageConfig);
+	var title = <PageLinkTitle basePath={props.resource} />;
 	return (
 		<React.Fragment>
-			{getBreadCrumbs(pageConfig.defaults.route, 'new')}
-			<Create {...props} actions={actions} />
+			<Create {...props} actions={actions} title={title} record={record} />
 		</React.Fragment>
 	);
 };
@@ -742,10 +745,10 @@ export const CustomEdit = ({ titleField, actions, undoable, pageConfig, extraBut
 
 	if (!undoable) undoable = false;
 	if (!actions) actions = MyEditActions(props, pageConfig, extraButtons);
-	var title = getCustomTitle(pageConfig.defaults, titleField);
+	//var title = getCustomTitle(pageConfig.defaults, titleField);
+	var title = <PageLinkTitle basePath={props.resource} />;
 	return (
 		<React.Fragment>
-			{getBreadCrumbs(pageConfig.defaults.route, 'edit', <span id="react-admin-title" />)}
 			<Edit {...props} undoable={undoable} actions={actions} title={title} />
 		</React.Fragment>
 	);
@@ -754,10 +757,9 @@ export const CustomEdit = ({ titleField, actions, undoable, pageConfig, extraBut
 export const CustomShow = ({ titleField, actions, undoable, pageConfig, ...props }) => {
 	console.log('show', props);
 	if (!actions) actions = getDetailActions(props, pageConfig);
-	var title = getCustomTitle(pageConfig.defaults, titleField);
+	var title = <PageLinkTitle basePath={props.resource} />;
 	return (
 		<React.Fragment>
-			{getBreadCrumbs(pageConfig.defaults.route, 'detail', <span id="react-admin-title" />)}
 			<Show {...props} actions={actions} title={title} />
 		</React.Fragment>
 	);
@@ -784,10 +786,14 @@ export const loadableBusiness = (imp, defaults) => {
 		list[key] = Loadable({
 			loader: () =>
 				imp()
-					.then(a => new Promise(resolve => setTimeout(() => resolve(a), 1000)))
-					.then(resp => resp[key]),
+					.then((a) => new Promise((resolve) => setTimeout(() => resolve(a), 1000)))
+					.then((resp) => resp[key]),
 			loading() {
-				return <div>...</div>;
+				return (
+					<div>
+						<LinearProgress color="primary" />
+					</div>
+				);
 			},
 		});
 	}
@@ -801,9 +807,9 @@ export const FormDataConsumerCustom = ({ children, prefix, ...rest1 }) => {
 	return (
 		<FormDataConsumer {...rest1}>
 			{({ formData, getSource, scopedFormData, ...rest }) => {
+				scopedFormData = getScopedFormData(formData, prefix);
 				if (!getSource) {
-					scopedFormData = getScopedFormData(formData, prefix);
-					getSource = x => x;
+					getSource = (x) => x;
 				}
 				return children({ form, formData, scopedFormData, getSource, ...rest });
 			}}
@@ -821,12 +827,20 @@ export const FormOnLoadComponent = ({ didMount, ...rest1 }) => {
 	);
 };
 
-export const dataToRaIdsData = data => {
+export const dataToRaIdsData = (data) => {
 	if (!data) data = [];
-	const ids = data.map(record => record.id);
+	const ids = data.map((record) => record.id);
 	const dataObject = data.reduce((acc, next) => {
 		acc[next.id] = next;
 		return acc;
 	}, {});
 	return { ids, data: dataObject };
+};
+
+export const positiveNumberValidation = () => (value, allValues) => {
+	if (value === undefined || value === '' || value === null) return undefined;
+	if (isNaN(Number(value)) || !(value > 0)) {
+		return 'ra.validation.positive';
+	}
+	return undefined;
 };

@@ -1,6 +1,6 @@
 ﻿export default {
-    "AdminApi/AdminRoleDefinitionSearch" : {
-        name: "AdminRoleDefinition",
+    'AdminApi/AdminRoleDefinitionSearch' : {
+        name: 'AdminRoleDefinition',
         fields: {
             id:"Id",
 			roleId:"RoleId",

@@ -1,6 +1,6 @@
 ﻿export default {
-    "AccountApi/UserSearch" : {
-        name: "User",
+    'AccountApi/UserSearch' : {
+        name: 'User',
         fields: {
             id:"Id",
 			name:"Name",

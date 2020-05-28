@@ -154,7 +154,9 @@ const font1 = createTypography(defaultTheme.palette, {
 	htmlFontSize: 16,
 });
 
-const mergeTheme = themeObj => {
+const spacing = [0, 4, 8, 16, 32, 64];
+
+const mergeTheme = (themeObj) => {
 	console.log('mergeTheme', themeObj);
 
 	const { theme, ...options } = themeObj;
@@ -250,11 +252,27 @@ const mergeTheme = themeObj => {
 				},
 			},
 			MuiFormControl: {
+				root: {
+					verticalAlign: undefined,
+					width: spacing[2] * 26 + 'px !important',
+				},
 				marginNormal: {
 					marginTop: 8,
 				},
 				marginDense: {
-					minWidth: '160px',
+					width: spacing[2] * 26 + 'px !important',
+					//minWidth: '256px',
+					marginTop: 2,
+					marginBottom: 2,
+				},
+				fullWidth: {
+					width: '100% !important',
+				},
+			},
+			MuiFormGroup: {
+				root: {
+					alignSelf: 'center',
+					display: 'inline-flex',
 				},
 			},
 			MuiInput: {
@@ -299,6 +317,12 @@ const mergeTheme = themeObj => {
 						backgroundColor: 'rgba(0, 0, 0, 0.03)',
 					},
 				},
+				input: {
+					marginDense: {
+						paddingTop: 19,
+						paddingBottom: 4,
+					},
+				},
 			},
 			MuiInputLabel: {
 				formControl: {
@@ -315,8 +339,8 @@ const mergeTheme = themeObj => {
 			},
 			MuiTableRow: {
 				head: {
-					borderBottom: '2px solid ' + theme.palette.divider,
-					borderTop: '1px solid ' + theme.palette.divider,
+					//borderBottom: '2px solid ' + theme.palette.divider,
+					//borderTop: '1px solid ' + theme.palette.divider,
 				},
 			},
 			MuiTableCell: {
@@ -389,9 +413,14 @@ const mergeTheme = themeObj => {
 					margin: 30,
 				},
 			},
-			MuiToolbar: {				
+			MuiToolbar: {
 				regular: {
 					justifyContent: 'flex-end',
+				},
+			},
+			MuiFormHelperText: {
+				contained: {
+					margin: '2px 14px 0',
 				},
 			},
 		},
@@ -438,6 +467,9 @@ const theme1 = {
 				input: {
 					backgroundColor: '#3e9cd6',
 				},
+				selectIcon: {
+					top: 5,
+				},
 			},
 			MuiAppBar: {
 				colorPrimary: {
@@ -448,7 +480,7 @@ const theme1 = {
 			MuiToolbar: {
 				root: {
 					color: 'rgba(0, 0, 0, 0.71)',
-				},				
+				},
 			},
 		},
 	},
@@ -504,7 +536,7 @@ export const getTheme = () => {
 	return finalTheme;
 };
 
-export const useStylesMain = makeStyles(theme => ({
+export const useStylesMain = makeStyles((theme) => ({
 	dropZone: {
 		border: '1px dashed ' + theme.palette.text.primary,
 		padding: 10,
